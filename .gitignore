@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/DMF_Services/obj
+/.vs/DMF_Services/CopilotIndices/17.14.1577.30250
+/.vs/DMF_Services/FileContentIndex
