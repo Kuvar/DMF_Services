@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"))
+        builder.Configuration.GetConnectionString("DefaultConnection"), sql => sql.UseNetTopologySuite())
     .LogTo(Console.WriteLine, LogLevel.Information);
 
     if (builder.Environment.IsDevelopment())
@@ -28,6 +28,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddMemoryCache();
 
 builder.Services.AddApiVersioning(options =>
 {
@@ -39,6 +40,8 @@ builder.Services.AddApiVersioning(options =>
 
 
 builder.Services.AddScoped<IUserDetailService, UserDetailService>();
+builder.Services.AddScoped<ICarLookupService, CarLookupService>();
+builder.Services.AddScoped<ICarService, CarService>();
 
 var app = builder.Build();
 
