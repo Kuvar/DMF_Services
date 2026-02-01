@@ -43,6 +43,20 @@ builder.Services.AddScoped<IUserDetailService, UserDetailService>();
 builder.Services.AddScoped<ICarLookupService, CarLookupService>();
 builder.Services.AddScoped<ICarService, CarService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowClient", policy =>
+    {
+        policy
+            .WithOrigins(
+                "https://localhost:7049",
+                "http://localhost:5098"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
