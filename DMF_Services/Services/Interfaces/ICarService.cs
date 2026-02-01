@@ -7,6 +7,6 @@ namespace DMF_Services.Services.Interfaces
     {
         Task<IEnumerable<CarDetailDto>> GetAllAsync();
         Task<CarDetailDto?> GetByIdAsync(int id);
-        Task<PagedResponse<CarFilterResultDto>> GetFilteredCarsAsync(string? brand, string? model, string? fuel, string? transmission, int owners, int priceMore, int priceLess, int drivenMore, int drivenLess, int age, int page, int pageSize, string sortBy, string sortDir);
+        Task<PagedResponse<CarFilterResultDto>> GetFilteredCarsAsync(string? brand, string? model, string? fuel, string? transmission, int owners, int priceMore, int priceLess, int drivenMore, int drivenLess, int age, int dealersID, int isActive, int page, int pageSize, string sortBy, string sortDir);
     }
 }
