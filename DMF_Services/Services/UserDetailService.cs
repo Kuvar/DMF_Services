@@ -30,12 +30,29 @@ namespace DMF_Services.Services
             return entity == null ? null : _mapper.Map<UserDetailDto>(entity);
         }
 
-        public async Task<int> CreateAsync(CreateUserDetailDto dto)
+        public async Task<UserDetailDto?> GetByMobileNoAsync(string mobile, bool isActive = true)
         {
+            var entity = await _db.UserDetails.FirstOrDefaultAsync(ud => ud.PrimaryMobile == mobile && ud.IsActive == isActive);
+            return entity == null ? null : _mapper.Map<UserDetailDto>(entity);
+        }
+
+        public async Task<(UserDetailDto UserDetail, bool IsCreated)> CreateAsync(CreateUserDetailDto dto)
+        {
+            var existingUser = await _db.UserDetails
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.PrimaryMobile == dto.PrimaryMobile);
+
+            if (existingUser != null)
+            {
+                return (_mapper.Map<UserDetailDto>(existingUser), false); // Not created
+            }
+
+
             var entity = _mapper.Map<UserDetail>(dto);
             _db.UserDetails.Add(entity);
             await _db.SaveChangesAsync();
-            return entity.Id;
+
+            return (_mapper.Map<UserDetailDto>(entity), true); // Newly created
         }
 
         public async Task UpdateAsync(int id, UpdateUserDetailDto dto)

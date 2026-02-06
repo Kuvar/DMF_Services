@@ -12,10 +12,12 @@ namespace DMF_Services.Controllers
     public class UserDetailsController : ControllerBase
     {
         private readonly IUserDetailService _service;
+        private readonly IAuthService _authService;
 
-        public UserDetailsController(IUserDetailService service)
+        public UserDetailsController(IUserDetailService service, IAuthService authService)
         {
             _service = service;
+            _authService = authService;
         }
 
         [HttpGet]
@@ -53,18 +55,63 @@ namespace DMF_Services.Controllers
             });
         }
 
-        [HttpPost]
-        public async Task<ActionResult<ApiResponse<int>>> Create(CreateUserDetailDto dto)
+        [HttpGet("get-user-by-mobile-no")]
+        public async Task<ActionResult<ApiResponse<UserDetailDto>>> GetByMobileNo([FromQuery] string mobile, [FromQuery] bool isActive = true)
         {
-            var id = await _service.CreateAsync(dto);
+            var data = await _service.GetByMobileNoAsync(mobile, isActive);
 
-            return CreatedAtAction(nameof(Get), new { id },
-                new ApiResponse<int>
+            if (data == null)
+            {
+                return NotFound(new ApiResponse<UserDetailDto>
+                {
+                    Success = false,
+                    Message = "User detail not found"
+                });
+            }
+
+            return Ok(new ApiResponse<UserDetailDto>
+            {
+                Success = true,
+                Message = "User detail fetched successfully",
+                Data = data
+            });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ApiResponse<UserDetailDto>>> Create(CreateUserDetailDto dto)
+        {
+            var (user, isCreated) = await _service.CreateAsync(dto);
+
+            if (user != null)
+            {
+                await _authService.SendOtpAsync(user.PrimaryMobile);
+
+                if (!isCreated)
+                {
+                    return Ok(new ApiResponse<UserDetailDto>
+                    {
+                        Success = true,
+                        Message = "User already exists",
+                        Data = user
+                    });
+                }
+
+                return CreatedAtAction(nameof(Get), new { id = user }, new ApiResponse<UserDetailDto>
                 {
                     Success = true,
                     Message = "User detail created successfully",
-                    Data = id
+                    Data = user
                 });
+            }
+            else
+            {
+                return BadRequest(new ApiResponse<UserDetailDto>
+                {
+                    Success = false,
+                    Message = "Server error",
+                    Data = user
+                });
+            }
         }
     }
 }
