@@ -38,6 +38,7 @@ namespace DMF_Services.DTOs.Cars
         public bool? BSD { get; set; }
         public bool? HillHold { get; set; }
         public GeoLocationDto? Location { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
         // -------- Images (API-friendly) --------
         public List<string> Images { get; set; } = new();
