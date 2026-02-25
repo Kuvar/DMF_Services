@@ -62,5 +62,7 @@ namespace DMF_Services.Models
 
         // -------- Pagination --------
         public int TotalCount { get; set; }
+
+        public bool IsWishlisted { get; set; }
     }
 }

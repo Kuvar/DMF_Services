@@ -48,6 +48,7 @@ namespace DMF_Services.Mappings
                         Latitude = s.CarLocation.Y,
                         Longitude = s.CarLocation.X
                     }))
+                .ForMember(d => d.IsWishlisted, o => o.MapFrom(s => s.IsWishlisted))
 
                 // -------- Images (Image1…Image20 → List<string>) --------
                 .ForMember(d => d.Images, o => o.MapFrom(s =>

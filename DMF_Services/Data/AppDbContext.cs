@@ -1,4 +1,5 @@
-﻿using DMF_Services.Models;
+﻿using DMF_Services.DTOs.Cars;
+using DMF_Services.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DMF_Services.Data
@@ -133,6 +134,7 @@ namespace DMF_Services.Data
             modelBuilder.Entity<CarFilterRaw>().HasNoKey();
             modelBuilder.Entity<CarBrandRaw>().HasNoKey();
             modelBuilder.Entity<CarModelRaw>().HasNoKey();
+            modelBuilder.Entity<WishlistToggleResultDto>().HasNoKey();
         }
     }
 }

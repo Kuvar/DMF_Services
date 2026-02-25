@@ -62,6 +62,7 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IUserDetailService, UserDetailService>();
 builder.Services.AddScoped<ICarLookupService, CarLookupService>();
 builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<ICarWishlistService, CarWishlistService>();
 
 builder.Services.AddCors(options =>
 {
